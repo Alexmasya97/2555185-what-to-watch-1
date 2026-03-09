@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../vendor/autoload.php';
 
-use App\Repository\OmdbMovieRepository;
-use App\Service\MovieService;
+use App\Repositories\OmdbFilmRepository;
+use App\Services\FilmService;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\HttpFactory;
 
@@ -10,8 +10,8 @@ use GuzzleHttp\Psr7\HttpFactory;
 $client = new Client();
 $requestFactory = new HttpFactory();
 
-$repository = new OmdbMovieRepository($client, $requestFactory);
-$service = new MovieService($repository);
+$repository = new OmdbFilmRepository($client, $requestFactory);
+$service = new FilmService($repository);
 
 $movie = $service->getMovieByImdbId('tt3896198');  // Теперь возвращает объект Movie
 
