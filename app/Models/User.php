@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
@@ -21,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'avatar',
+        'role',
     ];
 
     /**
@@ -41,4 +44,28 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+  public function favorites()
+  {
+    return $this->hasMany(Favorite::class);
+  }
+
+  public function favoriteFilms()
+  {
+    return $this->belongsToMany(Film::class, 'favorites');
+  }
+
+  public function comments():HasMany
+  {
+    return $this->hasMany(Comment::class);
+  }
+
+  public function moderatedFilms():HasMany
+  {
+    return $this->hasMany(Film::class, 'created_by');
+  }
+
+  public function moderatorActions()
+  {
+    return $this->hasMany(ModeratorAction::class, 'moderator_id');
+  }
 }
